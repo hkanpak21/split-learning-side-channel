@@ -1,11 +1,1 @@
----
-description: 
-globs: 
-alwaysApply: true
----
 
-# Your rule content
-
-- Fewer the lines code the better
-- You can @ files here
-- You can use markdown but dont have to
