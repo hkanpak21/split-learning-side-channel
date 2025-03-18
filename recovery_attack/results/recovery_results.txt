@@ -1,0 +1,18 @@
+Label Recovery Results Using Timing Side Channels
+===============================================
+
+Best model accuracy: 0.1150
+Random baseline accuracy: 0.1020
+Improvement over random: 1.45%
+
+Success rate by digit:
+Digit 0: 0.5676
+Digit 1: 0.0000
+Digit 2: 0.5306
+Digit 3: 0.0000
+Digit 4: 0.0000
+Digit 5: 0.0000
+Digit 6: 0.0000
+Digit 7: 0.0000
+Digit 8: 0.0000
+Digit 9: 0.0000

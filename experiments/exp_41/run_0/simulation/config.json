@@ -1,0 +1,12 @@
+{
+    "architecture": [
+        784,
+        128,
+        32,
+        10
+    ],
+    "cut_layer": 1,
+    "batch_size": 128,
+    "epochs": 3,
+    "learning_rate": 0.001
+}

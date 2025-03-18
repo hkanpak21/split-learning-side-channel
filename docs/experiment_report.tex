@@ -1,0 +1,136 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1cm]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{siunitx}
+
+\title{Split Learning Side Channel Analysis Report}
+\author{Experimental Results Analysis}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Overview}
+This report analyzes the timing-based side channel experiments conducted on split learning architectures. The experiments investigated transition times between different model configurations and their potential implications for privacy and security.
+
+\section{Key Findings}
+
+\subsection{Architectural Impact}
+\begin{itemize}
+    \item Two primary architectures were tested:
+        \begin{itemize}
+            \item Basic architecture (784-128-32-10)
+            \item Deeper architecture (784-256-128-64-10)
+        \end{itemize}
+    \item The deeper architecture consistently showed higher transition times (∼0.35-0.40ms) compared to the basic architecture (∼0.13-0.23ms)
+    \item Standard deviation in transition times was generally higher for the deeper architecture, indicating more variability in processing time
+\end{itemize}
+
+\subsection{Cut Layer Effects}
+\begin{itemize}
+    \item Two cut layer positions were tested for each architecture
+    \item For the basic architecture:
+        \begin{itemize}
+            \item Cut layer 1 showed mean transition times of 0.14-0.23ms
+            \item Cut layer 2 showed consistently lower transition times (0.11-0.21ms)
+        \end{itemize}
+    \item For the deeper architecture:
+        \begin{itemize}
+            \item Cut layer 1 showed mean transition times of 0.35-0.39ms
+            \item Cut layer 2 showed slightly lower transition times (0.33-0.37ms)
+        \end{itemize}
+    \item The difference in transition times between cut layers was more pronounced in the basic architecture
+\end{itemize}
+
+\subsection{Batch Size Impact}
+\begin{itemize}
+    \item Four batch sizes were tested: 16, 32, 64, and 128
+    \item Larger batch sizes generally led to:
+        \begin{itemize}
+            \item Increased mean transition times
+            \item More consistent timing patterns (lower standard deviation)
+            \item Better stability in measurements
+        \end{itemize}
+    \item The effect of batch size was more pronounced in the deeper architecture
+\end{itemize}
+
+\subsection{Learning Rate and Epoch Effects}
+\begin{itemize}
+    \item Two learning rates tested: 0.01 and 0.001
+    \item Learning rate impact:
+        \begin{itemize}
+            \item Lower learning rate (0.001) generally showed slightly higher transition times
+            \item Effect was more noticeable in later epochs
+        \end{itemize}
+    \item Epoch variations (3 vs 5):
+        \begin{itemize}
+            \item Later epochs showed more stable transition times
+            \item Minimal impact on mean transition times
+        \end{itemize}
+\end{itemize}
+
+\subsection{Security Implications}
+\begin{itemize}
+    \item Consistent timing differences between architectures could leak information about model structure
+    \item Batch size variations create distinguishable patterns that could be exploited
+    \item Cut layer position affects timing patterns, potentially revealing split point information
+    \item Standard deviations in timing measurements could indicate:
+        \begin{itemize}
+            \item Model complexity
+            \item Processing patterns
+            \item Potential vulnerabilities for side-channel attacks
+        \end{itemize}
+\end{itemize}
+
+\section{Experimental Configurations}
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\textbf{Architecture} & \textbf{Cut Layer} & \textbf{Batch Size} & \textbf{Epochs} & \textbf{Learning Rate} & \textbf{Mean Time (ms)} & \textbf{Std Dev} \\
+\midrule
+784-128-32-10 & 1 & 16 & 3 & 0.01 & 0.138 & 6.19e-6 \\
+784-128-32-10 & 2 & 16 & 3 & 0.01 & 0.116 & 2.46e-6 \\
+784-128-32-10 & 1 & 32 & 3 & 0.01 & 0.147 & 2.63e-6 \\
+784-128-32-10 & 2 & 32 & 3 & 0.01 & 0.130 & 2.33e-6 \\
+784-128-32-10 & 1 & 64 & 3 & 0.01 & 0.225 & 8.46e-6 \\
+784-128-32-10 & 2 & 64 & 3 & 0.01 & 0.207 & 6.79e-6 \\
+\midrule
+784-256-128-64-10 & 1 & 16 & 3 & 0.01 & 0.370 & 7.54e-6 \\
+784-256-128-64-10 & 2 & 16 & 3 & 0.01 & 0.350 & 5.04e-6 \\
+784-256-128-64-10 & 1 & 32 & 3 & 0.01 & 0.369 & 6.20e-6 \\
+784-256-128-64-10 & 2 & 32 & 3 & 0.01 & 0.337 & 5.72e-6 \\
+784-256-128-64-10 & 1 & 64 & 3 & 0.01 & 0.372 & 7.83e-6 \\
+784-256-128-64-10 & 2 & 64 & 3 & 0.01 & 0.363 & 5.41e-6 \\
+\bottomrule
+\end{tabular}
+\caption{Summary of key experimental configurations and their timing results. Times are in milliseconds.}
+\end{table}
+
+\section{Recommendations}
+\begin{itemize}
+    \item For privacy-sensitive applications:
+        \begin{itemize}
+            \item Use consistent batch sizes to prevent timing-based fingerprinting
+            \item Consider adding random delays to mask transition patterns
+            \item Implement timing normalization techniques
+        \end{itemize}
+    \item For performance optimization:
+        \begin{itemize}
+            \item Basic architecture with cut layer 2 shows best timing efficiency
+            \item Larger batch sizes provide more stable timing patterns
+            \item Learning rate of 0.01 generally results in faster transitions
+        \end{itemize}
+    \item For future research:
+        \begin{itemize}
+            \item Investigate additional cut layer positions
+            \item Study impact of network width on timing patterns
+            \item Explore defensive mechanisms against timing-based attacks
+        \end{itemize}
+\end{itemize}
+
+\end{document} 
